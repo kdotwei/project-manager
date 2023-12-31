@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="/assets/js/login.js"></script>
   <title>Login</title>
@@ -24,7 +25,7 @@
       </div>
 -->
       <div class="mt-10">
-        <form ACTION="/login" >
+        <form id="loginForm">
           <div class="flex flex-col mb-6">
             <label for="username" class="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">User Name:</label>
             <div class="relative">
@@ -34,7 +35,7 @@
                 </svg>
               </div>
   
-              <input id="username" type="text" name="username" class="text-sm sm:text-base placeholder-gray-500 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400" placeholder="User Name" />
+              <input id="username" type="username" name="username" class="text-sm sm:text-base placeholder-gray-500 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400" placeholder="User Name" />
             </div>
           </div>
           <div class="flex flex-col mb-6">
