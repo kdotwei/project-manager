@@ -9,4 +9,16 @@ server {
         proxy_set_header Host $host;
         proxy_cache_bypass $http_upgrade;
     }
+
+    location = /login {
+        rewrite ^ /identifier/login redirect;
+    }
+
+    location = /register {
+        rewrite ^ /identifier/register redirect;
+    }
+
+    location = /logout {
+        rewrite ^ /identifier/logout redirect;
+    }
 }

@@ -13,7 +13,7 @@ import (
 func Register(db *gorm.DB) gin.HandlerFunc {
 	return func(context *gin.Context) {
 		var user models.User
-		if err := context.ShouldBind(&user); err != nil {
+		if err := context.ShouldBindJSON(&user); err != nil {
 			context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid data"})
 			return
 		}
@@ -54,7 +54,7 @@ func Login(db *gorm.DB) gin.HandlerFunc {
 		var credentials models.User
 		var user models.User
 
-		if err := context.ShouldBind(&credentials); err != nil {
+		if err := context.ShouldBindJSON(&credentials); err != nil {
 			context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid data"})
 			return
 		}
@@ -82,5 +82,12 @@ func Login(db *gorm.DB) gin.HandlerFunc {
 		context.SetCookie("token", token, 3600, "/", "", false, true)
 
 		context.JSON(http.StatusOK, gin.H{"message": "login successful"})
+	}
+}
+
+func Logout() gin.HandlerFunc {
+	return func(context *gin.Context) {
+		context.SetCookie("token", "", -1, "/", "", false, true)
+		context.Redirect(http.StatusTemporaryRedirect, "/identifier/login")
 	}
 }

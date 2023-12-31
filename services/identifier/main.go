@@ -68,6 +68,7 @@ func main() {
 	service.GET("/", middleware.IsLoggedIn(), indexPage)
 	service.GET("/login", loginPage)
 	service.GET("/register", registerPage)
+	service.GET("/logout", handlers.Logout())
 
 	// From Page
 	service.POST("/login", handlers.Login(db))
