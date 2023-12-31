@@ -25,7 +25,7 @@ func LoginAuth(c *gin.Context) {
 		username = in
 	} else {
 		c.HTML(http.StatusBadRequest, "login.html", gin.H{
-			"error": errors.New("Empty username"),
+			"error": errors.New("Username can not be empty"),
 		})
 		return
 	}
@@ -33,7 +33,7 @@ func LoginAuth(c *gin.Context) {
 		password = in
 	} else {
 		c.HTML(http.StatusBadRequest, "login.html", gin.H{
-			"error": errors.New("Empty password"),
+			"error": errors.New("Password can not be empty"),
 		})
 		return
 	}
@@ -44,7 +44,7 @@ func LoginAuth(c *gin.Context) {
 		return
 	} else {
 		c.HTML(http.StatusUnauthorized, "login.html", gin.H{
-			"error": err,
+			"error": "Login Failed, Username or Password is not correct",
 		})
 		return
 	}
