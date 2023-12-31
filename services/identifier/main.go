@@ -38,7 +38,7 @@ func ensureRoles(db *gorm.DB, roles []string) {
 }
 
 func loginPage(context *gin.Context) {
-	tokenString, err := context.Cookie("token") // Assuming token is stored in a cookie
+	tokenString, err := context.Cookie("token")
 	if err == nil {
 		_, valid := middleware.VerifyToken(tokenString)
 		if valid {
@@ -50,11 +50,15 @@ func loginPage(context *gin.Context) {
 }
 
 func registerPage(context *gin.Context) {
+	tokenString, err := context.Cookie("token")
+	if err == nil {
+		_, valid := middleware.VerifyToken(tokenString)
+		if valid {
+			context.Redirect(http.StatusTemporaryRedirect, "/")
+			return
+		}
+	}
 	context.HTML(http.StatusOK, "register.html", nil)
-}
-
-func indexPage(context *gin.Context) {
-	context.HTML(http.StatusOK, "index.html", nil)
 }
 
 func main() {
@@ -65,7 +69,6 @@ func main() {
 	db := setupDatabase()
 
 	// Route
-	service.GET("/", middleware.IsLoggedIn(), indexPage)
 	service.GET("/login", loginPage)
 	service.GET("/register", registerPage)
 	service.GET("/logout", handlers.Logout())
