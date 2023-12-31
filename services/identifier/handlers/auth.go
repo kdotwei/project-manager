@@ -30,6 +30,20 @@ func Register(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
+		// Get or create the 'user' role
+		var role models.Role
+		err := db.Where(models.Role{Name: "user"}).FirstOrCreate(&role).Error
+		if err != nil {
+			context.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to assign role"})
+			return
+		}
+
+		// Add role to user
+		if err := models.AddRoleToUser(db, &user, &role); err != nil {
+			context.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to add role to user"})
+			return
+		}
+
 		context.JSON(http.StatusOK, gin.H{"message": "Registration successful"})
 	}
 }

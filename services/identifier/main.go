@@ -19,13 +19,29 @@ func setupDatabase() *gorm.DB {
 	}
 
 	// Migration
-	db.AutoMigrate(&models.User{})
+	db.AutoMigrate(&models.User{}, &models.Role{})
+
+	// Checking default roles
+	ensureRoles(db, []string{"user", "admin"})
 
 	return db
 }
 
-func LoginPage(context *gin.Context) {
+func ensureRoles(db *gorm.DB, roles []string) {
+	for _, roleName := range roles {
+		var role models.Role
+		if err := db.Where(models.Role{Name: roleName}).FirstOrCreate(&role, models.Role{Name: roleName}).Error; err != nil {
+			fmt.Printf("Unable to create role '%s': %v\n", roleName, err)
+		}
+	}
+}
+
+func loginPage(context *gin.Context) {
 	context.HTML(http.StatusOK, "login.html", nil)
+}
+
+func registerPage(context *gin.Context) {
+	context.HTML(http.StatusOK, "register.html", nil)
 }
 
 func main() {
@@ -36,7 +52,8 @@ func main() {
 	db := setupDatabase()
 
 	// Route
-	service.GET("/login", LoginPage)
+	service.GET("/login", loginPage)
+	service.GET("/register", registerPage)
 
 	// From Page
 	service.POST("/login", handlers.Login(db))

@@ -1,5 +1,6 @@
 $(document).ready(function() {
     $('#loginForm').on('submit', function(e) {
+        $('#loginError').hide();
         e.preventDefault();
 
         var userData = {
@@ -20,7 +21,7 @@ $(document).ready(function() {
             error: function(xhr, status, error) {
                 var response = JSON.parse(xhr.responseText);
                 console.log(xhr.responseText);
-                alert("Login failed: " + response.error);
+                $('#loginError').text("Login failed: " + response.error).show();
             }
         });
     });
