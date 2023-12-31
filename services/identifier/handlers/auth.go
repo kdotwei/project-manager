@@ -78,6 +78,9 @@ func Login(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
-		context.JSON(http.StatusOK, gin.H{"token": token})
+		// Steup cookie
+		context.SetCookie("token", token, 3600, "/", "", false, true)
+
+		context.JSON(http.StatusOK, gin.H{"message": "login successful"})
 	}
 }

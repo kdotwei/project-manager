@@ -10,13 +10,12 @@ $(document).ready(function() {
 
         $.ajax({
             type: "POST",
-            url: "/login",
+            url: "/identifier/login",
             contentType: "application/json",
             data: JSON.stringify(userData),
             success: function(response) {
                 console.log(response);
-                localStorage.setItem("token", response.token); // Store the token in localStorage
-                window.location.href = '/some-protected-route'; // Redirect to the protected page
+                window.location.href = '/'; // Redirect to the protected page
             },
             error: function(xhr, status, error) {
                 var response = JSON.parse(xhr.responseText);
