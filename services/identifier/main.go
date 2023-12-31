@@ -1,62 +1,46 @@
 package main
 
 import (
-	"errors"
+	"fmt"
+	"main/handlers"
+	"main/models"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
-var (
-	username string
-	password string
-)
+func setupDatabase() *gorm.DB {
+	dsn := "host=db user=admin dbname=app password=asdhjkhg85ygfvd14e7bjh port=5432 sslmode=disable"
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	if err != nil {
+		panic(fmt.Sprintf("failed to connect database: %v", err))
+	}
 
-func LoginPage(c *gin.Context) {
-	c.HTML(http.StatusOK, "login.html", nil)
+	// Migration
+	db.AutoMigrate(&models.User{})
+
+	return db
 }
 
-func LoginAuth(c *gin.Context) {
-	var (
-		username string
-		password string
-	)
-	if in, isExist := c.GetPostForm("username"); isExist && in != "" {
-		username = in
-	} else {
-		c.HTML(http.StatusBadRequest, "login.html", gin.H{
-			"error": errors.New("Empty username"),
-		})
-		return
-	}
-	if in, isExist := c.GetPostForm("password"); isExist && in != "" {
-		password = in
-	} else {
-		c.HTML(http.StatusBadRequest, "login.html", gin.H{
-			"error": errors.New("Empty password"),
-		})
-		return
-	}
-	if err := Auth(username, password); err == nil {
-		c.HTML(http.StatusOK, "login.html", gin.H{
-			"success": "Login Success",
-		})
-		return
-	} else {
-		c.HTML(http.StatusUnauthorized, "login.html", gin.H{
-			"error": err,
-		})
-		return
-	}
+func LoginPage(context *gin.Context) {
+	context.HTML(http.StatusOK, "login.html", nil)
 }
 
 func main() {
-	server := gin.Default()
-	server.LoadHTMLGlob("template/html/*")
+	// Serivce initialization
+	service := gin.Default()
+	service.LoadHTMLGlob("templates/html/*")
+	service.Static("/assets", "./templates/assets")
+	db := setupDatabase()
 
-	// Read the static files
-	server.Static("/assets", "./template/assets")
-	server.GET("/login", LoginPage)
-	server.POST("/login", LoginAuth)
-	server.Run(":8888")
+	// Route
+	service.GET("/login", LoginPage)
+
+	// From Page
+	service.POST("/login", handlers.Login(db))
+	service.POST("/register", handlers.Register(db))
+
+	service.Run() // listen and serve on 0.0.0.0:8080
 }

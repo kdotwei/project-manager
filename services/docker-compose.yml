@@ -1,0 +1,38 @@
+# Use postgres/example user/password credentials
+version: '3.8'
+
+services:
+  db:
+    image: postgres
+    restart: always
+    networks:
+      - internal
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: asdhjkhg85ygfvd14e7bjh
+      POSTGRES_DB: app
+
+  adminer:
+    image: adminer
+    restart: always
+    networks:
+      - internal
+    ports:
+      - 8080:8080
+
+  identifier:
+    build:
+      context: identifier/.
+      dockerfile: Dockerfile
+    networks:
+      - internal
+    ports:
+      - 80:8080
+    depends_on:
+      - db
+    volumes:
+      - ./identifier/:/usr/src/app/
+
+networks:
+  internal:
+    driver: bridge
