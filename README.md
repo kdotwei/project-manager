@@ -1,5 +1,5 @@
 ```shell
-docker build -t identifier service/identifier/.
+docker build -t identifier services/identifier/.
 ```
 
 ```shell
