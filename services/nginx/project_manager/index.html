@@ -48,18 +48,18 @@
       <p class="text-gray-800 mb-4">Login or register a new account to see the content.</p>
       <div id="userStatus" class="hidden">
         <!-- If user is logged in, show Logout button -->
-        <a href="/identifier/logout" class="btn bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded focus:outline-none">Logout</a>
+        <a href="/auth/logout" class="btn bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded focus:outline-none">Logout</a>
       </div>
       <div id="loginRegisterButtons">
         <!-- If user is not logged in, show Login and Register buttons -->
-        <a href="/identifier/login" class="btn bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded focus:outline-none mr-2">Login</a>
-        <a href="/identifier/register" class="btn bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded focus:outline-none">Register</a>
+        <a href="/auth/login" class="btn bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded focus:outline-none mr-2">Login</a>
+        <a href="/auth/register" class="btn bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded focus:outline-none">Register</a>
       </div>
     </div>
   </div>
 
   <script>
-    const isUserLoggedIn = false; // This should be dynamically set based on the actual login status
+    const isUserLoggedIn = true; // This should be dynamically set based on the actual login status
 
     $(document).ready(function () {
       // Based on user login status, toggle button visibility
