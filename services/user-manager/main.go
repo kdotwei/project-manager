@@ -62,11 +62,13 @@ func main() {
 	CreateAdminUser(db) // Seeding
 
 	// Routes
-	adminRoutes := service.Group("/admin").Use(middleware.RequireAdminRole(db))
+	adminRoutes := service.Group("/").Use(middleware.RequireAdminRole(db))
 	{
 		// Protected routes for admin
 		adminRoutes.GET("/users", handlers.ListUsers(db))
 		adminRoutes.GET("/users/:id", handlers.GetUser(db))
+
+		adminRoutes.POST("/users/create", handlers.CreateUser(db))
 	}
 
 	service.Run()
