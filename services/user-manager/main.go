@@ -66,7 +66,7 @@ func main() {
 	CreateAdminUser(db)
 
 	// Routes setting
-	// adminRoutes := service.Group("/").Use(middleware.RequireAdminRole(db))
+	adminRoutes := service.Group("/").Use(middleware.RequireAdminRole(db))
 	apiRoutes := service.Group("/api").Use(middleware.RequireAdminRole(db))
 	{
 		// API requests
@@ -77,7 +77,8 @@ func main() {
 	}
 	{
 		// Page requests
-		apiRoutes.GET("/users", handlers.IndexPage)
+		adminRoutes.GET("/users", handlers.IndexPage)
+		adminRoutes.GET("/users/:id", handlers.UserPage)
 	}
 
 	service.Run()
