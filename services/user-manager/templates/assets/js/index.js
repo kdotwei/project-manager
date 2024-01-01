@@ -38,6 +38,13 @@ $(document).ready(function() {
                 });
                 $('#usersTableBody').html(tbodyContent);
 
+                // Add click event listener for Edit buttons
+                $('.edit-btn').click(function(event) {
+                    event.stopPropagation(); // Prevent triggering the user-row click event
+                    var userID = $(this).attr('id').split('-')[1];
+                    window.location.href = `/user-manager/users/${userID}/edit`;
+                });
+
                 // Add click event listener for Delete buttons
                 $('.delete-btn').click(function(event) {
                     event.stopPropagation(); // Prevent triggering the user-row click event

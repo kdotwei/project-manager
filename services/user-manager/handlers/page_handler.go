@@ -21,3 +21,10 @@ func UserPage(context *gin.Context) {
 func CreatePage(context *gin.Context) {
 	context.HTML(http.StatusOK, "create.html", nil)
 }
+
+func EditPage(context *gin.Context) {
+	userID := context.Param("id")
+	context.HTML(http.StatusOK, "edit.html", gin.H{
+		"userID": userID,
+	})
+}

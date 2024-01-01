@@ -73,6 +73,7 @@ func main() {
 		apiRoutes.GET("/users/:id", handlers.GetUser(db))
 
 		apiRoutes.POST("/users/create", handlers.CreateUserJSON(db))
+		apiRoutes.PUT("/users/:id/update", handlers.UpdateUser(db))
 		apiRoutes.DELETE("/users/:id/delete", handlers.DeleteUser(db))
 	}
 
@@ -82,6 +83,7 @@ func main() {
 		adminRoutes.GET("/users", handlers.IndexPage)
 		adminRoutes.GET("/users/:id", handlers.UserPage)
 		adminRoutes.GET("/users/create", handlers.CreatePage)
+		adminRoutes.GET("/users/:id/edit", handlers.EditPage)
 	}
 
 	service.Run()

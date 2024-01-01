@@ -13,7 +13,7 @@ $(document).ready(function() {
             user = user.user;
             $('#username').text(user.username);
             $('#create_time').text(new Date(user.CreatedAt).toLocaleDateString() + " " + new Date(user.CreatedAt).toLocaleTimeString());
-            $('a[href="#edit"]').attr('href', '/user-manager/users/' + userId + '/edit');
+            $('#editButton').attr('href', '/user-manager/users/' + userId + '/edit');
             $('a[href="#delete"]').attr('href', '/user-manager/api/users/' + userId + '/delete');
         },
         error: function(error) {
