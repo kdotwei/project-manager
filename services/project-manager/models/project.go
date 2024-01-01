@@ -28,10 +28,10 @@ func init() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	createTable()
+	CreateTable()
 }
 
-func createTable() {
+func CreateTable() {
 	createProjectsTableSQL := `
 		CREATE TABLE IF NOT EXISTS projects (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,

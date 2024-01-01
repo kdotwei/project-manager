@@ -10,7 +10,7 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-func getProjects(db *sql.DB, w http.ResponseWriter, r *http.Request) {
+func GetProjects(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 	rows, err := db.Query("SELECT id, name FROM projects")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -27,14 +27,14 @@ func getProjects(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		project.Tasks = getTasks(db, project.ID)
+		project.Tasks = GetTasks(db, project.ID)
 		projects = append(projects, project)
 	}
 
 	json.NewEncoder(w).Encode(projects)
 }
 
-func getTasks(db *sql.DB, projectID int) []models.Task {
+func GetTasks(db *sql.DB, projectID int) []models.Task {
 	rows, err := db.Query("SELECT id, name, status, project_id FROM tasks WHERE project_id = ?", projectID)
 	if err != nil {
 		log.Fatal(err)

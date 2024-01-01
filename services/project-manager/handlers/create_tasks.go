@@ -8,7 +8,7 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-func createTask(db *sql.DB, w http.ResponseWriter, r *http.Request) {
+func CreateTask(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 	name := r.FormValue("name")
 	projectID, err := strconv.Atoi(r.FormValue("projectId"))
 	if err != nil {

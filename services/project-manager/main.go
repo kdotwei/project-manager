@@ -5,18 +5,37 @@ import (
 	"log"
 	"net/http"
 
+	"main/handlers"
+
 	_ "github.com/mattn/go-sqlite3"
 )
 
 var db *sql.DB
 
-func init() {
+func main() {
 	var err error
 	db, err = sql.Open("sqlite3", "projects.db")
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer db.Close()
+
 	createTable()
+
+	http.HandleFunc("/projects", func(w http.ResponseWriter, r *http.Request) {
+		handlers.GetProjects(db, w, r)
+	})
+
+	http.HandleFunc("/createProject", func(w http.ResponseWriter, r *http.Request) {
+		handlers.CreateProject(db, w, r)
+	})
+
+	http.HandleFunc("/createTask", func(w http.ResponseWriter, r *http.Request) {
+		handlers.CreateTask(db, w, r)
+	})
+
+	log.Println("Server is running at :8080")
+	http.ListenAndServe(":8080", nil)
 }
 
 func createTable() {
@@ -44,14 +63,4 @@ func createTable() {
 	if err != nil {
 		log.Fatal(err)
 	}
-}
-
-func main() {
-	defer db.Close()
-
-	http.HandleFunc("/projects", handlers.getProjects(db))
-	http.HandleFunc("/createProject", handlers.createProject(db))
-	http.HandleFunc("/createTask", handlers.createTask(db))
-	log.Println("Server is running at :8080")
-	http.ListenAndServe(":8080", nil)
 }
