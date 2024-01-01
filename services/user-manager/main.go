@@ -58,17 +58,26 @@ func CreateAdminUser(db *gorm.DB) {
 func main() {
 	// Initialize
 	service := gin.Default()
+	service.LoadHTMLGlob("templates/html/*")
+	service.Static("/assets", "./templates/assets")
 	db := setupDatabase()
-	CreateAdminUser(db) // Seeding
 
-	// Routes
-	adminRoutes := service.Group("/").Use(middleware.RequireAdminRole(db))
+	// Seeding
+	CreateAdminUser(db)
+
+	// Routes setting
+	// adminRoutes := service.Group("/").Use(middleware.RequireAdminRole(db))
+	apiRoutes := service.Group("/api").Use(middleware.RequireAdminRole(db))
 	{
-		// Protected routes for admin
-		adminRoutes.GET("/users", handlers.ListUsers(db))
-		adminRoutes.GET("/users/:id", handlers.GetUser(db))
+		// API requests
+		apiRoutes.GET("/users", handlers.ListUsers(db))
+		apiRoutes.GET("/users/:id", handlers.GetUser(db))
 
-		adminRoutes.POST("/users/create", handlers.CreateUser(db))
+		apiRoutes.POST("/users/create", handlers.CreateUser(db))
+	}
+	{
+		// Page requests
+		apiRoutes.GET("/users", handlers.IndexPage)
 	}
 
 	service.Run()
