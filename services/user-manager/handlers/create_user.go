@@ -35,7 +35,7 @@ func CreateUserJSON(db *gorm.DB) gin.HandlerFunc {
 
 		// Saving user info
 		if err := db.Create(&user).Error; err != nil {
-			context.JSON(http.StatusInternalServerError, gin.H{"error": "Registration failed"})
+			context.JSON(http.StatusInternalServerError, gin.H{"error": "Create user failed"})
 			return
 		}
 
@@ -53,6 +53,6 @@ func CreateUserJSON(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
-		context.JSON(http.StatusOK, gin.H{"message": "Registration successful"})
+		context.JSON(http.StatusOK, gin.H{"message": "Create user successful"})
 	}
 }

@@ -31,6 +31,7 @@ $(document).ready(function() {
 		complete: function() {
 			// Hide the loading spinner
 			$('#loading-spinner').addClass('hidden');
+			$('#submit-button').removeClass('hidden');
 		}
 	});
 	});

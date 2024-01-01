@@ -73,6 +73,7 @@ func main() {
 		apiRoutes.GET("/users/:id", handlers.GetUser(db))
 
 		apiRoutes.POST("/users/create", handlers.CreateUserJSON(db))
+		apiRoutes.DELETE("/users/:id/delete", handlers.DeleteUser(db))
 	}
 
 	adminRoutes := service.Group("/").Use(middleware.RequireAdminRole(db))
