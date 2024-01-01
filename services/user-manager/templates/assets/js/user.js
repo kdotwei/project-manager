@@ -22,4 +22,23 @@ $(document).ready(function() {
             console.error('Error fetching user:', error);
         }
     });
+
+    // Delete user event
+    $('#deleteButton').click(function() {
+        if (confirm('Are you sure you want to delete this user?')) {
+            $.ajax({
+                url: userApiUrl + '/delete',
+                type: 'DELETE',
+                success: function(response) {
+                    alert('User deleted successfully');
+                    window.location.href = '/user-manager/users'; // Redirect to users list
+                },
+                error: function(error) {
+                    var errorMsg = error.responseJSON && error.responseJSON.error ? error.responseJSON.error : "Error occurred during deletion.";
+                    $('#error-message').text(errorMsg).removeClass('hidden');
+                    console.error('Error deleting user:', error);
+                }
+            });
+        }
+    });
 });
