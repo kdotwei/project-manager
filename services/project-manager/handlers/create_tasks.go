@@ -1,14 +1,12 @@
 package handlers
 
 import (
-	"database/sql"
+	"main/models"
 	"net/http"
 	"strconv"
-
-	_ "github.com/mattn/go-sqlite3"
 )
 
-func CreateTask(db *sql.DB, w http.ResponseWriter, r *http.Request) {
+func CreateTask(w http.ResponseWriter, r *http.Request) {
 	name := r.FormValue("name")
 	projectID, err := strconv.Atoi(r.FormValue("projectId"))
 	if err != nil {
@@ -21,9 +19,10 @@ func CreateTask(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err = db.Exec("INSERT INTO tasks (name, status, project_id) VALUES (?, ?, ?)", name, "Pending", projectID)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+	task := models.Task{Name: name, Status: "Pending", ProjectID: projectID}
+	result := db.Create(&task)
+	if result.Error != nil {
+		http.Error(w, result.Error.Error(), http.StatusInternalServerError)
 		return
 	}
 

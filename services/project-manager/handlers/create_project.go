@@ -1,24 +1,29 @@
 package handlers
 
 import (
-	"database/sql"
+	"main/models"
 	"net/http"
 
-	_ "github.com/mattn/go-sqlite3"
+	"gorm.io/gorm"
 )
 
-func CreateProject(db *sql.DB, w http.ResponseWriter, r *http.Request) {
+var db *gorm.DB
+
+func Init(gdb *gorm.DB) {
+	db = gdb
+}
+
+func CreateProject(w http.ResponseWriter, r *http.Request) {
 	name := r.FormValue("name")
 	if name == "" {
 		http.Error(w, "Project name cannot be empty", http.StatusBadRequest)
 		return
 	}
 
-	_, err := db.Exec("INSERT INTO projects (name) VALUES (?)", name)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+	project := models.Project{Name: name}
+	result := db.Create(&project)
+	if result.Error != nil {
+		http.Error(w, result.Error.Error(), http.StatusInternalServerError)
 		return
 	}
-
-	w.WriteHeader(http.StatusOK)
 }
