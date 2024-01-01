@@ -72,6 +72,7 @@ func main() {
 	service.GET("/login", loginPage)
 	service.GET("/register", registerPage)
 	service.GET("/logout", handlers.Logout())
+	service.GET("/validate", handlers.ValidateToken())
 
 	// From Page
 	service.POST("/login", handlers.Login(db))

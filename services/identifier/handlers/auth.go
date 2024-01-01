@@ -94,6 +94,31 @@ func Login(db *gorm.DB) gin.HandlerFunc {
 func Logout() gin.HandlerFunc {
 	return func(context *gin.Context) {
 		context.SetCookie("token", "", -1, "/", "", false, true)
-		context.Redirect(http.StatusTemporaryRedirect, "/identifier/login")
+		context.Redirect(http.StatusTemporaryRedirect, "/auth/login")
+	}
+}
+
+// ValidateToken is used by the Nginx auth_request module to validate JWT tokens
+func ValidateToken() gin.HandlerFunc {
+	return func(context *gin.Context) {
+		// Extract the JWT token from the Authorization header
+		tokenString, err := context.Cookie("token")
+
+		// If the token is not present, return an unauthorized status
+		if err != nil {
+			context.AbortWithStatus(http.StatusUnauthorized)
+			return
+		}
+
+		// Verify the token
+		_, valid := middleware.VerifyToken(tokenString)
+		if !valid {
+			// If the token is invalid, return an unauthorized status
+			context.AbortWithStatus(http.StatusUnauthorized)
+			return
+		}
+
+		// If the token is valid, return OK status
+		context.Status(http.StatusOK)
 	}
 }
