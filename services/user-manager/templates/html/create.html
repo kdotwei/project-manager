@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/user-manager/assets/js/create.js"></script>
+  <title>Users</title>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900">
+  <!-- Navigation -->
+  <nav class="hidden">
+  </nav>
+  
+  <div class="container mx-auto p-4">
+    <!-- Error Message -->
+    <div id="error-message" class="hidden p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+      <span class="font-medium">Danger alert!</span> Change a few things up and try submitting again.
+    </div>
+    <!-- ------------- -->
+
+    <!-- Banner -->
+    <div class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-300 text-xl font-bold p-4 rounded-md mb-4">
+      Create User
+    </div>
+    <!-- ------ -->
+
+    <!-- Card -->
+    <div class="max-w-sm mx-auto p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+      <!-- Form -->
+      <form id="submitForm">
+      <!-- <form method="POST" action="/user-manager/api/users/create"> -->
+        <div class="mb-5">
+          <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
+          <input type="username" id="username" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+        </div>
+        <div class="mb-5">
+          <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+          <input type="password" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+        </div>
+        <button id="submit-button" type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+        <!-- Spinner (initially hidden) -->
+        <div id="loading-spinner" class="hidden mx-auto my-4">
+          <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-blue-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a9 9 0 0118 0H4z"></path>
+          </svg>
+        </div>
+      </form>
+    </div>
+    <!-- ---- -->
+  </div>
+</body>
+</html>
