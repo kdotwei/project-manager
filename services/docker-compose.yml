@@ -48,6 +48,20 @@ services:
     depends_on:
       - db
 
+  user-manager:
+    build:
+      context: user-manager/.
+      dockerfile: Dockerfile
+    networks:
+      - internal
+    volumes:
+      - ./user-manager/:/usr/src/app/
+    ports:
+      - 8081:8080
+    depends_on:
+      - db
+      - identifier
+
 networks:
   internal:
     driver: bridge
