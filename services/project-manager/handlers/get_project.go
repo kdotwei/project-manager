@@ -1,18 +1,22 @@
 package handlers
 
 import (
-	"encoding/json"
 	"main/models"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
-func GetProjects(w http.ResponseWriter, r *http.Request) {
-	var projects []models.Project
-	result := db.Preload("Tasks").Find(&projects)
-	if result.Error != nil {
-		http.Error(w, result.Error.Error(), http.StatusInternalServerError)
-		return
-	}
+func GetProjects(db *gorm.DB) gin.HandlerFunc {
+	return func(context *gin.Context) {
+		var projects []models.Project
+		result := db.Preload("Tasks").Find(&projects)
+		if result.Error != nil {
+			context.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
+			return
+		}
 
-	json.NewEncoder(w).Encode(projects)
+		context.JSON(http.StatusOK, projects)
+	}
 }

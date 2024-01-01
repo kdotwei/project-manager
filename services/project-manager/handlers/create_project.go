@@ -4,26 +4,27 @@ import (
 	"main/models"
 	"net/http"
 
+	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
 
-var db *gorm.DB
+func CreateProject(db *gorm.DB) gin.HandlerFunc {
+	return func(context *gin.Context) {
+		var project models.Project
+		if err := context.ShouldBindJSON(&project); err != nil {
+			context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
 
-func Init(gdb *gorm.DB) {
-	db = gdb
-}
+		if project.Name == "" {
+			context.JSON(http.StatusBadRequest, gin.H{"error": "Project name cannot be empty"})
+			return
+		}
 
-func CreateProject(w http.ResponseWriter, r *http.Request) {
-	name := r.FormValue("name")
-	if name == "" {
-		http.Error(w, "Project name cannot be empty", http.StatusBadRequest)
-		return
-	}
-
-	project := models.Project{Name: name}
-	result := db.Create(&project)
-	if result.Error != nil {
-		http.Error(w, result.Error.Error(), http.StatusInternalServerError)
-		return
+		if err := db.Create(&project).Error; err != nil {
+			context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		context.JSON(http.StatusCreated, project)
 	}
 }

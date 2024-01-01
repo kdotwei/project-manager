@@ -3,28 +3,28 @@ package handlers
 import (
 	"main/models"
 	"net/http"
-	"strconv"
+
+	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
-func CreateTask(w http.ResponseWriter, r *http.Request) {
-	name := r.FormValue("name")
-	projectID, err := strconv.Atoi(r.FormValue("projectId"))
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
+func CreateTask(db *gorm.DB) gin.HandlerFunc {
+	return func(context *gin.Context) {
+		var task models.Task
+		if err := context.ShouldBindJSON(&task); err != nil {
+			context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
 
-	if name == "" {
-		http.Error(w, "Task name cannot be empty", http.StatusBadRequest)
-		return
-	}
+		if task.Name == "" {
+			context.JSON(http.StatusBadRequest, gin.H{"error": "Task name cannot be empty"})
+			return
+		}
 
-	task := models.Task{Name: name, Status: "Pending", ProjectID: projectID}
-	result := db.Create(&task)
-	if result.Error != nil {
-		http.Error(w, result.Error.Error(), http.StatusInternalServerError)
-		return
+		if err := db.Create(&task).Error; err != nil {
+			context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		context.JSON(http.StatusCreated, task)
 	}
-
-	w.WriteHeader(http.StatusOK)
 }
