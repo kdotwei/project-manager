@@ -4,47 +4,64 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home Page</title>
+  <title>Welcome to Our Site</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
   <style>
-    /* Custom styles */
     .btn {
       font-size: 0.8rem;
       padding: 8px 12px;
     }
+    /* Custom styles for centering the white box */
+    .container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0 auto; /* Center container on the screen horizontally */
+    }
+    .box {
+      width: 100%;
+      max-width: 400px; /* Maximum width of the box */
+      padding: 2rem;
+      background: #fff;
+      border-radius: 0.5rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      text-align: center; /* Center text */
+    }
+    /* Ensure full width is taken */
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
   </style>
 </head>
-
 <body class="bg-gray-300">
-  <div class="min-h-screen flex flex-col items-center justify-center">
-    <div class="flex flex-col bg-white shadow-md px-4 sm:px-6 md:px-8 lg:px-10 py-8 rounded-md w-full max-w-md">
-      <!-- Title Bar -->
-      <div class="flex justify-between items-center mb-4">
-        <div class="font-medium text-xl sm:text-2xl uppercase text-gray-800">Welcome to Our Site</div>
-        <div class="flex" id="buttonContainer">
-          <div id="userStatus" class="hidden">
-            <!-- If user is logged in, show Logout button -->
-            <a href="/identifier/logout" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none btn">Logout</a>
-          </div>
-          <div id="loginRegisterButtons">
-            <!-- If user is not logged in, show Login and Register buttons -->
-            <a href="/identifier/login" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2 focus:outline-none btn">Login</a>
-            <a href="/identifier/register" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none btn">Register</a>
-          </div>
-        </div>
+  <div class="container">
+    <div class="box">
+      <h1 class="text-xl sm:text-2xl text-gray-800 font-medium mb-4">
+        WELCOME TO OUR SITE
+      </h1>
+      <p class="text-gray-800 mb-4">A microservice built with Go</p>
+      <p class="text-gray-800 mb-4">Login or register a new account to see the content.</p>
+      <div id="userStatus" class="hidden">
+        <!-- If user is logged in, show Logout button -->
+        <a href="/identifier/logout" class="btn bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded focus:outline-none">Logout</a>
       </div>
-
-      <!-- Other content -->
-      <div class="font-medium self-center text-xl sm:text-2xl text-gray-800">A microservice built with Go</div>
-      <div class="font-medium self-center text- text-gray-800">Login or register a new account to see the content.</div>
-      <!-- Place other page content here -->
-
+      <div id="loginRegisterButtons">
+        <!-- If user is not logged in, show Login and Register buttons -->
+        <a href="/identifier/login" class="btn bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded focus:outline-none mr-2">Login</a>
+        <a href="/identifier/register" class="btn bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded focus:outline-none">Register</a>
+      </div>
     </div>
   </div>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script>
-    const isUserLoggedIn = false;
+    const isUserLoggedIn = false; // This should be dynamically set based on the actual login status
 
     $(document).ready(function () {
       // Based on user login status, toggle button visibility
@@ -58,5 +75,4 @@
     });
   </script>
 </body>
-
 </html>
