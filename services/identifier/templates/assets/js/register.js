@@ -9,12 +9,12 @@ $(document).ready(function () {
 
         $.ajax({
             type: "POST",
-            url: "/identifier/register",
+            url: "/auth/register",
             contentType: "application/json",
             data: JSON.stringify(userData),
             success: function (response) {
                 console.log(response);
-                window.location.href = '/identifier/login'; // Redirect to the protected page
+                window.location.href = '/auth/login'; // Redirect to the protected page
             },
             error: function (xhr, status, error) {
                 var response = JSON.parse(xhr.responseText);

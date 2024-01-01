@@ -8,6 +8,7 @@ services:
       - internal
     volumes:
       - ./nginx/templates:/etc/nginx/templates
+      - ./nginx/project_manager:/var/www/project_manager
     ports:
       - "80:80"
       - "443:443"

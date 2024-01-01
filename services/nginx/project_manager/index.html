@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Home Page</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <style>
     /* Custom styles */
@@ -24,12 +25,12 @@
         <div class="flex" id="buttonContainer">
           <div id="userStatus" class="hidden">
             <!-- If user is logged in, show Logout button -->
-            <a href="/identifier/logout" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none btn">Logout</a>
+            <a href="/auth/logout" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none btn">Logout</a>
           </div>
           <div id="loginRegisterButtons">
             <!-- If user is not logged in, show Login and Register buttons -->
-            <a href="/identifier/login" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2 focus:outline-none btn">Login</a>
-            <a href="/identifier/register" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none btn">Register</a>
+            <a href="/auth/login" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2 focus:outline-none btn">Login</a>
+            <a href="/auth/register" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none btn">Register</a>
           </div>
         </div>
       </div>
@@ -41,8 +42,6 @@
 
     </div>
   </div>
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script>
     const isUserLoggedIn = false;
 

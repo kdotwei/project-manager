@@ -13,7 +13,7 @@ $(document).ready(function() {
 
         $.ajax({
             type: "POST",
-            url: "/identifier/login",
+            url: "/auth/login",
             contentType: "application/json",
             data: dataToSend,
             success: function(response) {
