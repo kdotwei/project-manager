@@ -21,6 +21,13 @@ func CreateTask(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
+		// Check if task name already exists
+		var existingTask models.Task
+		if err := db.Where("name = ? AND project_id = ?", task.Name, task.ProjectID).First(&existingTask).Error; err == nil {
+			context.JSON(http.StatusBadRequest, gin.H{"error": "Task name already exists in the project"})
+			return
+		}
+
 		if err := db.Create(&task).Error; err != nil {
 			context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return

@@ -21,8 +21,15 @@ func CreateProject(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
+		// Check if project name already exists
+		if err := db.Where("name = ?", project.Name).First(&project).Error; err == nil {
+			context.JSON(http.StatusBadRequest, gin.H{"error": "Project name already exists"})
+			return
+		}
+
+		// Create project
 		if err := db.Create(&project).Error; err != nil {
-			context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			context.JSON(http.StatusInternalServerError, gin.H{"error": "Error creating project"})
 			return
 		}
 		context.JSON(http.StatusCreated, project)
