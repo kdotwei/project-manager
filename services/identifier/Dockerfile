@@ -2,6 +2,9 @@ FROM golang:1.21
 
 WORKDIR /usr/src/app
 
+# System settings
+RUN ln -sf /usr/share/zoneinfo/Asia/Taipei /etc/localtime
+
 # Install the dockerize
 ENV DOCKERIZE_VERSION v0.7.0
 

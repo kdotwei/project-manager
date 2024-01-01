@@ -11,6 +11,7 @@ import (
 func RequireAdminRole(db *gorm.DB) gin.HandlerFunc {
 	return func(context *gin.Context) {
 		tokenString, err := context.Cookie("token")
+
 		if err != nil {
 			// token not found
 			context.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})

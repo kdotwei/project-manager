@@ -2,6 +2,7 @@
 package handlers
 
 import (
+	"log"
 	"main/models"
 	"net/http"
 
@@ -9,27 +10,49 @@ import (
 	"gorm.io/gorm"
 )
 
-func CreateUser(db *gorm.DB) gin.HandlerFunc {
+func CreateUserJSON(db *gorm.DB) gin.HandlerFunc {
 	return func(context *gin.Context) {
-		var newUser models.User
-		if err := context.ShouldBindJSON(&newUser); err != nil {
-			context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request data"})
+		var user models.User
+
+		log.Println("Creating user")
+
+		if err := context.ShouldBindJSON(&user); err != nil {
+			context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid data"})
 			return
 		}
 
-		// Password
-		if err := newUser.SetPassword(newUser.Password); err != nil {
-			context.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to encrypt password"})
+		// Check if the user already exists
+		if err := db.Where("username = ?", user.Username).First(&user).Error; err == nil {
+			context.JSON(http.StatusUnauthorized, gin.H{"error": "The user already exists"})
 			return
 		}
 
-		// Create user in database
-		if err := db.Create(&newUser).Error; err != nil {
-			context.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create user"})
+		// Encrypt password
+		if err := user.SetPassword(user.Password); err != nil {
+			context.JSON(http.StatusInternalServerError, gin.H{"error": "Password encryption failed"})
 			return
 		}
 
-		newUser.Password = ""
-		context.JSON(http.StatusCreated, gin.H{"user": newUser})
+		// Saving user info
+		if err := db.Create(&user).Error; err != nil {
+			context.JSON(http.StatusInternalServerError, gin.H{"error": "Registration failed"})
+			return
+		}
+
+		// Get or create the 'user' role
+		var role models.Role
+		err := db.Where(models.Role{Name: "user"}).FirstOrCreate(&role).Error
+		if err != nil {
+			context.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to assign role"})
+			return
+		}
+
+		// Add role to user
+		if err := models.AddRoleToUser(db, &user, &role); err != nil {
+			context.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to add role to user"})
+			return
+		}
+
+		context.JSON(http.StatusOK, gin.H{"message": "Registration successful"})
 	}
 }

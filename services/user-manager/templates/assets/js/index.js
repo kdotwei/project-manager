@@ -1,6 +1,12 @@
 // assets/js/index.js
 
 $(document).ready(function() {
+    $('#createButton').click(function() {
+      window.location.href = '/user-manager/users/create';
+    });
+});
+
+$(document).ready(function() {
     $.ajax({
         url: '/user-manager/api/users',
         type: 'GET',

@@ -17,3 +17,7 @@ func UserPage(context *gin.Context) {
 		"userID": userID,
 	})
 }
+
+func CreatePage(context *gin.Context) {
+	context.HTML(http.StatusOK, "create.html", nil)
+}
