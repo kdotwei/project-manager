@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/user-manager/assets/js/user.js"></script>
+  <title>User</title>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900">
+  <div class="container mx-auto p-4">
+    <!-- Error Message -->
+    <div id="error-message" class="hidden p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+      <span class="font-medium">Danger alert!</span> Change a few things up and try submitting again.
+    </div>
+
+    <!-- Banner -->
+    <div class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-300 text-xl font-bold p-4 rounded-md mb-4">
+      User
+    </div>
+
+    <!-- Card -->
+    <div class="w-full p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+      <div>
+          <h5 id="username" class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"></h5>
+      </div>
+      <p id="create_time" class="mb-3 font-normal text-gray-700 dark:text-gray-400"></p>
+      <a href="#" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+        Edit
+        <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+        </svg>
+      </a>
+      <a href="#" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 ml-2">
+        Delete
+        <span class="ml-1">X</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- user.html -->
+  <div id="userId" data-user-id="{{ .userID }}" style="display: none;"></div>
+</body>
+</html>
