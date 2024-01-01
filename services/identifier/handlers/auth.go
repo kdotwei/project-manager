@@ -18,6 +18,12 @@ func Register(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
+		// Check if the user already exists
+		if err := db.Where("username = ?", user.Username).First(&user).Error; err == nil {
+			context.JSON(http.StatusUnauthorized, gin.H{"error": "The user already exists"})
+			return
+		}
+
 		// Encrypt password
 		if err := user.SetPassword(user.Password); err != nil {
 			context.JSON(http.StatusInternalServerError, gin.H{"error": "Password encryption failed"})
