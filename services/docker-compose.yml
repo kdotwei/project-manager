@@ -62,6 +62,20 @@ services:
       - db
       - identifier
 
+  project-manager:
+    build:
+      context: project-manager/.
+      dockerfile: Dockerfile
+    networks:
+      - internal
+    volumes:
+      - ./project-manager/:/usr/src/app/
+    ports:
+      - 8082:8080
+    depends_on:
+      - db
+      - identifier
+
 networks:
   internal:
     driver: bridge

@@ -1,7 +1,7 @@
 // Fetch and display projects
 function fetchProjects() {
     $.ajax({
-      url: "http://localhost:8080/projects",
+      url: "/project-manager/api/projects",
       type: "GET",
       success: function(data) {
         displayProjects(data);
@@ -38,7 +38,7 @@ function fetchProjects() {
   function createProject() {
     var projectName = document.getElementById("projectName").value;
     $.ajax({
-      url: "http://localhost:8080/createProject",
+      url: "/project-manager/api/createProject",
       type: "POST",
       data: { name: projectName },
       success: function() {
@@ -56,7 +56,7 @@ function fetchProjects() {
     if (!taskName) return;
   
     $.ajax({
-      url: "http://localhost:8080/createTask",
+      url: "/project-manager/api/createTask",
       type: "POST",
       data: { name: taskName, projectId: projectId },
       success: function() {
