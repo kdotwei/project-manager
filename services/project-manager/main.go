@@ -40,11 +40,11 @@ func main() {
 		apiRoutes.DELETE("/projects/:id/delete", handlers.DeleteProject(db))
 
 		// CRUD for tasks
-		apiRoutes.GET("/projects/:id/tasks")
-		apiRoutes.GET("/projects/:id/tasks/:id")
-		apiRoutes.POST("/projects/:id/tasks/create")
-		apiRoutes.PUT("/projects/:id/tasks/:id/update")
-		apiRoutes.DELETE("/projects/:id/tasks/:id/delete")
+		apiRoutes.GET("/projects/:id/tasks", handlers.ListProjectTasks(db))
+		apiRoutes.GET("/projects/:id/tasks/:taskId", handlers.GetTask(db))
+		apiRoutes.POST("/projects/:id/tasks/create", handlers.CreateTask(db))
+		apiRoutes.PUT("/projects/:id/tasks/:taskId/update", handlers.UpdateTask(db))
+		apiRoutes.DELETE("/projects/:id/tasks/:taskId/delete", handlers.DeleteTask(db))
 	}
 
 	loginRoutes := service.Group("/").Use(middleware.RequireLogin(db))
@@ -54,8 +54,8 @@ func main() {
 		loginRoutes.GET("/projects/:id/edit", handlers.EditPage)
 
 		// Pages for tasks
-		loginRoutes.GET("/projects/:id/tasks")
-		loginRoutes.GET("/projects/:id/tasks/:id/edit")
+		loginRoutes.GET("/projects/:id/tasks", handlers.ProjectPage)
+		loginRoutes.GET("/projects/:id/tasks/:taskId/edit", handlers.EditTaskPage)
 	}
 
 	service.Run()

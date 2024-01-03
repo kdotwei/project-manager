@@ -15,6 +15,7 @@ type Project struct {
 type Task struct {
 	gorm.Model
 	Name      string  `json:"name"`
+	Status    string  `json:"status"`
 	ProjectID uint    `json:"project_id"` // Foreign key
 	Project   Project `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"-"`
 }

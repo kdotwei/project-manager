@@ -75,7 +75,7 @@ $(document).ready(function() {
                     loadProjects(); // Reload projects after deletion
                 },
                 error: function(error) {
-                    var error_message = error.response_json && error.response_json.error ? error.response_json.error : "Unknown error occurred, please try again.";
+                    var error_message = error.responseJSON && error.responseJSON.error ? error.responseJSON.error : "Unknown error occurred, please try again.";
                     $('#error-message').text(error_message).removeClass('hidden');
                     console.error('Error deleting project:', error);
                 }
@@ -100,7 +100,7 @@ $(document).ready(function() {
                 loadProjects(); // Reload projects after creation
             },
             error: function(error) {
-                var error_message = error.response_json && error.response_json.error ? error.response_json.error : "Unknown error occurred, please try again.";
+                var error_message = error.responseJSON && error.responseJSON.error ? error.responseJSON.error : "Unknown error occurred, please try again.";
                 $('#error-message').text(error_message).removeClass('hidden');
                 console.error('Error fetching users:', error);
             }
