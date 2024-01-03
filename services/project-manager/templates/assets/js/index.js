@@ -26,6 +26,7 @@ $(document).ready(function() {
                             <td class="px-6 py-4">${new Date(project.CreatedAt).toLocaleDateString()} ${new Date(project.CreatedAt).toLocaleTimeString()}</td>
                             <td class="px-6 py-4">${new Date(project.UpdatedAt).toLocaleDateString()} ${new Date(project.UpdatedAt).toLocaleTimeString()}</td>
                             <td class="px-6 py-4 text-right">
+                                <button id="edit-${project.ID}" class="edit-btn font-medium text-blue-600 dark:text-blue-500 hover:underline mr-3">Edit</button>
                                 <button id="delete-${project.ID}" class="delete-btn font-medium text-red-600 dark:text-red-500 hover:underline">Delete</button>
                             </td>
                         </tr>
@@ -33,19 +34,26 @@ $(document).ready(function() {
                     tbodyContent += projectRow;
                 });
                 $('#projectsTableBody').html(tbodyContent);
+
+                // Click event listener for Edit buttons
+                $('.edit-btn').click(function(event) {
+                    event.stopPropagation(); // Prevent triggering the project-row click event
+                    var projectId = $(this).attr('id').split('-')[1];
+                    window.location.href = `/project-manager/projects/${projectId}/edit`;
+                });
                 
                 // Click event listener for Delete buttons
                 $('.delete-btn').click(function(event) {
                     event.stopPropagation(); // Prevent triggering the project-row click event
-                    var project_id = $(this).attr('id').split('-')[1];
-                    deleteProject(project_id);
+                    var projectId = $(this).attr('id').split('-')[1];
+                    deleteProject(projectId);
                 });
 
                 // Click event listener for project row
                 $('.project-row').click(function(event) {
                     if (!$(event.target).hasClass('edit-btn') && !$(event.target).hasClass('delete-btn')) {
-                        var project_id = $(this).data('project-id');
-                        window.location.href = `/project-manager/projects/${project_id}/tasks`;
+                        var projectId = $(this).data('project-id');
+                        window.location.href = `/project-manager/projects/${projectId}/tasks`;
                     }
                 });
             },
@@ -56,10 +64,10 @@ $(document).ready(function() {
     }
 
     // Function to delete project
-    function deleteProject(project_id) {
+    function deleteProject(projectId) {
         if (confirm('Are you sure you want to delete this project?')) {
             $.ajax({
-                url: `/project-manager/api/projects/${project_id}/delete`,
+                url: `/project-manager/api/projects/${projectId}/delete`,
                 type: 'DELETE',
                 success: function(response) {
                     console.log('Project deleted:', response);

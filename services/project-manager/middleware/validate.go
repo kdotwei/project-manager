@@ -13,6 +13,7 @@ func RequireLogin(db *gorm.DB) gin.HandlerFunc {
 		if err != nil {
 			// token not found
 			context.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+			context.Redirect(http.StatusTemporaryRedirect, "/auth/logout")
 			return
 		}
 
@@ -20,6 +21,7 @@ func RequireLogin(db *gorm.DB) gin.HandlerFunc {
 		_, valid := VerifyToken(tokenString)
 		if !valid {
 			context.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
+			context.Redirect(http.StatusTemporaryRedirect, "/auth/logout")
 			return
 		}
 

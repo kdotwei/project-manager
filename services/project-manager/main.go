@@ -13,7 +13,7 @@ import (
 )
 
 func setupDatabase() *gorm.DB {
-	dsn := "host=db user=admin dbname=app password=asdhjkhg85ygfvd14e7bjh port=5432 sslmode=disable"
+	dsn := "host=db user=admin dbname=app password=admin port=5432 sslmode=disable"
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic(fmt.Sprintf("failed to connect database: %v", err))
@@ -33,13 +33,15 @@ func main() {
 	apiRoutes := service.Group("/api").Use(middleware.RequireLogin(db))
 	{
 		// CRUD for projects
-		apiRoutes.GET("/projects", handlers.GetProjects(db))
+		apiRoutes.GET("/projects", handlers.ListProjects(db))
+		apiRoutes.GET("/projects/:id", handlers.GetProject(db))
 		apiRoutes.POST("/projects/create", handlers.CreateProject(db))
-		apiRoutes.PUT("/projects/:id/update")
-		apiRoutes.DELETE("/projects/:id/delete")
+		apiRoutes.PUT("/projects/:id/update", handlers.UpdateProject(db))
+		apiRoutes.DELETE("/projects/:id/delete", handlers.DeleteProject(db))
 
 		// CRUD for tasks
 		apiRoutes.GET("/projects/:id/tasks")
+		apiRoutes.GET("/projects/:id/tasks/:id")
 		apiRoutes.POST("/projects/:id/tasks/create")
 		apiRoutes.PUT("/projects/:id/tasks/:id/update")
 		apiRoutes.DELETE("/projects/:id/tasks/:id/delete")
@@ -49,7 +51,7 @@ func main() {
 	{
 		// Pages for projects
 		loginRoutes.GET("/projects", handlers.IndexPage)
-		loginRoutes.GET("/projects/:id/edit")
+		loginRoutes.GET("/projects/:id/edit", handlers.EditPage)
 
 		// Pages for tasks
 		loginRoutes.GET("/projects/:id/tasks")
