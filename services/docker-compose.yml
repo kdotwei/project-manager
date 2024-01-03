@@ -24,7 +24,7 @@ services:
       - internal
     environment:
       POSTGRES_USER: admin
-      POSTGRES_PASSWORD: asdhjkhg85ygfvd14e7bjh
+      POSTGRES_PASSWORD: admin
       POSTGRES_DB: app
 
   adminer:
@@ -58,6 +58,20 @@ services:
       - ./user-manager/:/usr/src/app/
     ports:
       - 8081:8080
+    depends_on:
+      - db
+      - identifier
+
+  project-manager:
+    build:
+      context: project-manager/.
+      dockerfile: Dockerfile
+    networks:
+      - internal
+    volumes:
+      - ./project-manager/:/usr/src/app/
+    ports:
+      - 8082:8080
     depends_on:
       - db
       - identifier

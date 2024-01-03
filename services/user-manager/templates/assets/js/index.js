@@ -38,18 +38,25 @@ $(document).ready(function() {
                 });
                 $('#usersTableBody').html(tbodyContent);
 
-                // Add click event listener for Delete buttons
-                $('.delete-btn').click(function(event) {
+                // Click event listener for Edit buttons
+                $('.edit-btn').click(function(event) {
                     event.stopPropagation(); // Prevent triggering the user-row click event
-                    var userID = $(this).attr('id').split('-')[1];
-                    deleteUser(userID);
+                    var user_id = $(this).attr('id').split('-')[1];
+                    window.location.href = `/user-manager/users/${user_id}/edit`;
                 });
 
-                // Add click event listener for user row
+                // Click event listener for Delete buttons
+                $('.delete-btn').click(function(event) {
+                    event.stopPropagation(); // Prevent triggering the user-row click event
+                    var user_id = $(this).attr('id').split('-')[1];
+                    deleteUser(user_id);
+                });
+
+                // Click event listener for user row
                 $('.user-row').click(function(event) {
                     if (!$(event.target).hasClass('edit-btn') && !$(event.target).hasClass('delete-btn')) {
-                        var userID = $(this).data('user-id');
-                        window.location.href = `/user-manager/users/${userID}`;
+                        var user_id = $(this).data('user-id');
+                        window.location.href = `/user-manager/users/${user_id}`;
                     }
                 });
             },
@@ -60,10 +67,10 @@ $(document).ready(function() {
     }
 
     // Function to delete user
-    function deleteUser(userID) {
+    function deleteUser(user_id) {
         if (confirm('Are you sure you want to delete this user?')) {
             $.ajax({
-                url: `/user-manager/api/users/${userID}/delete`,
+                url: `/user-manager/api/users/${user_id}/delete`,
                 type: 'DELETE',
                 success: function(response) {
                     console.log('User deleted:', response);

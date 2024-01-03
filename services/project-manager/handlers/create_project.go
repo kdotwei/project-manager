@@ -1,6 +1,8 @@
+// handlers/create_project.go
 package handlers
 
 import (
+	"log"
 	"main/models"
 	"net/http"
 
@@ -11,27 +13,27 @@ import (
 func CreateProject(db *gorm.DB) gin.HandlerFunc {
 	return func(context *gin.Context) {
 		var project models.Project
+
+		log.Println("Creating project")
 		if err := context.ShouldBindJSON(&project); err != nil {
-			context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid data"})
 			return
 		}
 
-		if project.Name == "" {
-			context.JSON(http.StatusBadRequest, gin.H{"error": "Project name cannot be empty"})
+		log.Println("Project Name: ", project.Name)
+
+		// Check if the project exists
+		if err := db.Where("name = ?", project.Name).First(&models.Project{}).Error; err == nil {
+			context.JSON(http.StatusUnauthorized, gin.H{"error": "The project already exists"})
 			return
 		}
 
-		// Check if project name already exists
-		if err := db.Where("name = ?", project.Name).First(&project).Error; err == nil {
-			context.JSON(http.StatusBadRequest, gin.H{"error": "Project name already exists"})
-			return
-		}
-
-		// Create project
+		// Save the project
 		if err := db.Create(&project).Error; err != nil {
-			context.JSON(http.StatusInternalServerError, gin.H{"error": "Error creating project"})
+			context.JSON(http.StatusInternalServerError, gin.H{"error": "Create project failed"})
 			return
 		}
-		context.JSON(http.StatusCreated, project)
+
+		context.JSON(http.StatusOK, gin.H{"message": "Create project successful"})
 	}
 }

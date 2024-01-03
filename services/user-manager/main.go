@@ -13,7 +13,7 @@ import (
 )
 
 func setupDatabase() *gorm.DB {
-	dsn := "host=db user=admin dbname=app password=asdhjkhg85ygfvd14e7bjh port=5432 sslmode=disable"
+	dsn := "host=db user=admin dbname=app password=admin port=5432 sslmode=disable"
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic(fmt.Sprintf("failed to connect database: %v", err))
@@ -73,6 +73,7 @@ func main() {
 		apiRoutes.GET("/users/:id", handlers.GetUser(db))
 
 		apiRoutes.POST("/users/create", handlers.CreateUserJSON(db))
+		apiRoutes.PUT("/users/:id/update", handlers.UpdateUser(db))
 		apiRoutes.DELETE("/users/:id/delete", handlers.DeleteUser(db))
 	}
 
@@ -82,6 +83,7 @@ func main() {
 		adminRoutes.GET("/users", handlers.IndexPage)
 		adminRoutes.GET("/users/:id", handlers.UserPage)
 		adminRoutes.GET("/users/create", handlers.CreatePage)
+		adminRoutes.GET("/users/:id/edit", handlers.EditPage)
 	}
 
 	service.Run()

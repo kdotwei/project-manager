@@ -1,4 +1,4 @@
-// handlers/get_project.go
+// handlers/get_tasks.go
 package handlers
 
 import (
@@ -10,23 +10,22 @@ import (
 	"gorm.io/gorm"
 )
 
-func GetProject(db *gorm.DB) gin.HandlerFunc {
+func ListProjectTasks(db *gorm.DB) gin.HandlerFunc {
 	return func(context *gin.Context) {
-		// Get the ID from URL
+		// Get the project ID
 		projectID, err := strconv.Atoi(context.Param("id"))
 		if err != nil {
 			context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid project ID"})
 			return
 		}
 
+		// Get tasks for the project
 		var project models.Project
-
-		// Find the project ID from database
 		if err := db.Preload("Tasks").First(&project, projectID).Error; err != nil {
 			context.JSON(http.StatusNotFound, gin.H{"error": "Project not found"})
 			return
 		}
 
-		context.JSON(http.StatusOK, project)
+		context.JSON(http.StatusOK, gin.H{"tasks": project.Tasks})
 	}
 }

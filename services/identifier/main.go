@@ -13,7 +13,7 @@ import (
 )
 
 func setupDatabase() *gorm.DB {
-	dsn := "host=db user=admin dbname=app password=asdhjkhg85ygfvd14e7bjh port=5432 sslmode=disable"
+	dsn := "host=db user=admin dbname=app password=admin port=5432 sslmode=disable"
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic(fmt.Sprintf("failed to connect database: %v", err))

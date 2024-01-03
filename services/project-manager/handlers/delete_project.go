@@ -1,3 +1,4 @@
+// handlers/delete_project.go
 package handlers
 
 import (
@@ -10,26 +11,27 @@ import (
 )
 
 func DeleteProject(db *gorm.DB) gin.HandlerFunc {
-	return func(c *gin.Context) {
-		id, err := strconv.Atoi(c.Param("id"))
+	return func(context *gin.Context) {
+		// Get the ID frpm URL
+		projectID, err := strconv.Atoi(context.Param("id"))
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid project id"})
+			context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid project ID"})
 			return
 		}
 
-		// Look up the project
+		// Check if the project exists
 		var project models.Project
-		if err := db.First(&project, id).Error; err != nil {
-			c.JSON(http.StatusNotFound, gin.H{"error": "Project not found"})
+		if err := db.First(&project, projectID).Error; err != nil {
+			context.JSON(http.StatusNotFound, gin.H{"error": "Project not found"})
 			return
 		}
-
-		// Delete tasks associated with the project
-		db.Where("project_id = ?", id).Delete(&models.Task{})
 
 		// Delete the project
-		db.Delete(&project)
+		if err := db.Select("Tasks").Delete(&project).Error; err != nil {
+			context.JSON(http.StatusInternalServerError, gin.H{"error": "Error deleting project and tasks"})
+			return
+		}
 
-		c.JSON(http.StatusOK, gin.H{"data": true})
+		context.JSON(http.StatusOK, gin.H{"message": "Project and tasks deleted successfully"})
 	}
 }
