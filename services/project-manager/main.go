@@ -12,8 +12,6 @@ import (
 	"gorm.io/gorm"
 )
 
-var db *gorm.DB
-
 func setupDatabase() *gorm.DB {
 	dsn := "host=db user=admin dbname=app password=asdhjkhg85ygfvd14e7bjh port=5432 sslmode=disable"
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
@@ -41,7 +39,7 @@ func main() {
 		apiRoutes.DELETE("/projects/:id/delete")
 
 		// CRUD for tasks
-		apiRoutes.GET("/projects/:id/tasks", handlers.GetProjects(db))
+		apiRoutes.GET("/projects/:id/tasks")
 		apiRoutes.POST("/projects/:id/tasks/create")
 		apiRoutes.PUT("/projects/:id/tasks/:id/update")
 		apiRoutes.DELETE("/projects/:id/tasks/:id/delete")
@@ -51,11 +49,11 @@ func main() {
 	{
 		// Pages for projects
 		loginRoutes.GET("/projects", handlers.IndexPage)
-		loginRoutes.GET("/projects/edit")
+		loginRoutes.GET("/projects/:id/edit")
 
 		// Pages for tasks
 		loginRoutes.GET("/projects/:id/tasks")
-		loginRoutes.GET("/projects/:id/tasks/edit")
+		loginRoutes.GET("/projects/:id/tasks/:id/edit")
 	}
 
 	service.Run()

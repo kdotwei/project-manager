@@ -24,7 +24,7 @@ services:
       - internal
     environment:
       POSTGRES_USER: admin
-      POSTGRES_PASSWORD: asdhjkhg85ygfvd14e7bjh
+      POSTGRES_PASSWORD: admin
       POSTGRES_DB: app
 
   adminer:
