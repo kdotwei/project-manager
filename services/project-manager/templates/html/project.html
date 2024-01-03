@@ -5,13 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="/user-manager/assets/js/index.js"></script>
-  <title>Users</title>
+  <script src="/project-manager/assets/js/project.js"></script>
+  <title>Project Tasks</title>
 </head>
+
 <body class="bg-gray-100 dark:bg-gray-900">
-  <!-- Navigation -->
-  <nav class="hidden"></nav>
-  
   <div class="container mx-auto p-4">
     <!-- Error Message -->
     <div id="error-message" class="hidden p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
@@ -25,40 +23,37 @@
 
     <!-- Banner -->
     <div class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-300 text-xl font-bold p-4 rounded-md mb-4">
-      User Manager
+      Project Tasks
     </div>
 
-    <!-- Button -->
-    <div class="flex justify-end mb-4">
-      <button id="createButton" class="px-4 py-2 text-sm font-medium text-white bg-green-500 rounded-lg hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
-        Create +
-      </button>
-    </div>
+    <!-- Create Task Form -->
+    <form id="createTaskForm" class="m-4">
+        <div class="flex justify-between items-center">
+            <input type="text" id="task-name" class="block w-full p-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="New Task Name" required>
+            <button type="submit" class="ml-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Create Task</button>
+        </div>
+    </form>
 
-    <!-- Table -->
+    <!-- Task Table -->
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
       <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
           <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
-                  <th scope="col" class="px-6 py-3">
-                    ID
-                  </th>
-                  <th scope="col" class="px-6 py-3">
-                    Username
-                  </th>
-                  <th scope="col" class="px-6 py-3">
-                    Create Time
-                  </th>
-                  <th scope="col" class="px-6 py-3">
-                      <span class="sr-only">Edit</span>
-                  </th>
+                  <th scope="col" class="px-6 py-3">Task ID</th>
+                  <th scope="col" class="px-6 py-3">Task Name</th>
+                  <th scope="col" class="px-6 py-3">Status</th>
+                  <th scope="col" class="px-6 py-3">Created At</th>
+                  <th scope="col" class="px-6 py-3">Updated At</th>
+                  <th scope="col" class="px-6 py-3"><span class="sr-only">Actions</span></th>
               </tr>
           </thead>
-          <tbody id="usersTableBody">
+          <tbody id="tasksTableBody">
             <!-- Content will be populated by JavaScript -->
           </tbody>
       </table>
     </div>
   </div>
+
+  <div id="projectId" data-project-id="{{ .projectID }}" style="display: none;"></div>
 </body>
 </html>
